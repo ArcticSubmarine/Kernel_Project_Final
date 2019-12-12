@@ -1,0 +1,35 @@
+name: Deploy to Google Cloud
+on:
+  push:
+    branches: ['*']
+jobs:
+  deploy:
+    name: Google Cloud Run
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [animals, stocks, volunteers]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v1
+      - name: Setup Google Cloud SDK
+        uses: mathrix-education/setup-gcloud@0.1.2
+        with:
+          project: custom-hold-259008
+          service-account-key: ${{ secrets.GCLOUD_AUTH }}
+          configure-docker: true
+      - name: Build Docker image
+        run: |
+          cd ${{ matrix.project }}
+          docker build -t eu.gcr.io/custom-hold-259008/${{ matrix.project }}:latest .
+      - name: Push to GCR repository
+        run: docker push eu.gcr.io/custom-hold-259008/${{ matrix.project }}:latest
+      - name: Deploy on Google Cloud Run
+        run: |
+          gcloud run deploy ${{ matrix.project }} \
+            --image eu.gcr.io/custom-hold-259008/${{ matrix.project }}:latest \
+            --platform=managed \
+            --region=europe-west1 \
+            --allow-unauthenticated \
+            --set-cloudsql-instances=custom-hold-259008:europe-north1:postgresql \
+            --set-env-vars="PGHOST=${{ secrets.PGHOST }},PGUSER=${{ secrets.PGUSER }},PGDATABASE=${{ secrets.PGDATABASE }},PGPASSWORD=${{ secrets.PGPASSWORD }}"
