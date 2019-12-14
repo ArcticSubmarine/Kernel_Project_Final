@@ -72,7 +72,7 @@ const createVolunteer = function (request, response) {
 };
 
 //Delete a volunteer
-// curl -X "DELETE" -d "id=2" http://localhost:3000/animals
+// curl -X "DELETE" -d "id=2" http://localhost:3000/volunteers
 const deleteVolunteer = function (request, response) {
     const {id} = request.body;
     pool.query('DELETE FROM volunteers WHERE id_volunteer = $1', [id], function (err, result) {
