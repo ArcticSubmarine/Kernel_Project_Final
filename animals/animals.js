@@ -3,7 +3,7 @@ var pool = queries.pool;
 
 //Get all animals
 const getAnimals = function(request, response){
-    pool.query('SELECT * FROM animals_view ORDER BY id ASC', function (error, results) {
+    pool.query('SELECT * FROM animals_view ORDER BY "Id" ASC', function (error, results) {
         if (error) {throw error;}
         response.status(200).json(results.rows);
     })
@@ -11,28 +11,28 @@ const getAnimals = function(request, response){
 
 //Get all the animals of a specie
 const getDogs = function (request, response){
-    pool.query("SELECT * FROM animals_view WHERE specie = 'Dog' ", function (err, result) {
+    pool.query("SELECT * FROM animals_view WHERE "Specie" = 'Dog' ", function (err, result) {
         if (err){throw err;}
         response.status(200).json(result.rows)
     })
 };
 
 const getCats = function (request, response){
-    pool.query("SELECT * FROM animals_view WHERE specie = 'Cat'", function (err, result) {
+    pool.query("SELECT * FROM animals_view WHERE "Specie" = 'Cat'", function (err, result) {
         if (err){throw err;}
         response.status(200).json(result.rows)
     })
 };
 
 const getBirds = function (request, response){
-    pool.query("SELECT * FROM animals_view WHERE specie = 'Bird'", function (err, result) {
+    pool.query("SELECT * FROM animals_view WHERE "Specie" = 'Bird'", function (err, result) {
         if (err){throw err;}
         response.status(200).json(result.rows)
     })
 };
 
 const getRodents = function (request, response){
-    pool.query("SELECT * FROM animals_view WHERE specie = 'Rodent'", function (err, result) {
+    pool.query("SELECT * FROM animals_view WHERE "Specie" = 'Rodent'", function (err, result) {
         if (err){throw err;}
         response.status(200).json(result.rows)
     })
